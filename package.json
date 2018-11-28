@@ -1,0 +1,56 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "This is a chat application, written in React",
+  "engines": {
+    "node": "8.12.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server -d --open",
+    "build": "webpack -d",
+    "serve": "webpack -p",
+    "test": "echo 'tests temporary disabled'; exit 0",
+    "lint": "eslint ./src",
+    "stylelint": "stylelint ./src/**/*.css",
+    "precommit": "npm run lint && npm run stylelint",
+    "prepush": "echo 'tests temporary disabled'; exit 0",
+    "postinstall": "npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wital619/chat-app.git"
+  },
+  "author": "Vitaliy Pogoretskyy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wital619/chat-app/issues"
+  },
+  "homepage": "https://github.com/Wital619/chat-app#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.1",
+    "eslint": "^5.3.0",
+    "eslint-plugin-react": "^7.11.0",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.2.0",
+    "jest": "^23.6.0",
+    "prop-types": "^15.6.2",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.1",
+    "style-loader": "^0.23.1",
+    "stylelint": "^9.9.0",
+    "stylelint-config-standard": "^18.2.0",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  }
+}
