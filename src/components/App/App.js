@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-
-import styles from './App.css';
+import RegistrationForm from '../RegistrationForm';
 
 class App extends Component {
   render () {
-    return (
-      <div className={styles.app}>You see me !</div>
-    );
+    return <RegistrationForm />;
   }
 }
 

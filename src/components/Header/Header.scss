@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  background-color: #ccc;
+
+  &-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  &-avatar-wrapper {
+    margin-right: 10px;
+  }
+
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  &-top-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

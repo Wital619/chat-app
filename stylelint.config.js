@@ -2,7 +2,12 @@ module.exports = {
   extends: [
     "stylelint-config-standard"
   ],
+  plugins: [
+		"stylelint-scss"
+	],
   rules: {
+    "at-rule-no-unknown": null,
+		"scss/at-rule-no-unknown": true,
     indentation: 2,
     "number-leading-zero": null,
     "selector-pseudo-class-no-unknown": [true, {
