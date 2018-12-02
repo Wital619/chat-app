@@ -1,0 +1,36 @@
+@import '../../../styles/colors';
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: $grey-lighten;
+}
+
+.form-input {
+  width: 100%;
+  height: 33px;
+  border-radius: 5px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  outline: none;
+  background-color: #454955;
+  color: #b3b3b3;
+
+  &:focus {
+    border-color: $grey-lighten;
+  }
+
+  &::placeholder {
+    color: #717479;
+  }
+
+  &-error {
+    border: 1px solid red;
+  }
+}

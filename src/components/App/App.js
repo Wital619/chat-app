@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import RegistrationForm from '../RegistrationForm';
+import FormWrapper from '../controls/FormWrapper';
 
 class App extends Component {
   render () {
-    return <RegistrationForm />;
+    return <FormWrapper />;
   }
 }
 
