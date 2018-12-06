@@ -4,41 +4,38 @@ import PropTypes from 'prop-types';
 import styles from './FormGroup.scss';
 
 const FormGroup = ({
-  input, 
   labelText, 
-  id, 
+  id,
+  name,
   placeholder, 
   inputType,
-  meta: { 
-    touched, 
-    error,
-    warning
-  }
+  value,
+  handleInputChange
 }) => {
-  const isThereError = (touched && (error || warning)) === 'Required';
-
   return (
     <div className={styles.formField}>
       <label className={styles.formLabel} htmlFor={id}>{labelText}</label>
       <input 
-        className={`${styles.formInput} ${isThereError ? styles.formInputError : null}`} 
+        className={`${styles.formInput}`} 
         id={id}
+        name={name}
         type={inputType} 
-        placeholder={`Type ${placeholder}`} 
-        {...input}
+        placeholder={`Type ${placeholder}`}
+        value={value}
+        onChange={handleInputChange}
       />
-      {touched && (error || warning)}
     </div>
   );
 };
 
 FormGroup.propTypes = {
-  input             : PropTypes.object.isRequired,
   labelText         : PropTypes.string.isRequired,
   id                : PropTypes.string.isRequired,
+  name              : PropTypes.string.isRequired,
   placeholder       : PropTypes.string.isRequired,
   inputType         : PropTypes.string,
-  meta              : PropTypes.object
+  value             : PropTypes.string.isRequired,
+  handleInputChange : PropTypes.func.isRequired
 };
 
 FormGroup.defaultProps = {

@@ -1,67 +1,114 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { reduxForm, Field } from 'redux-form';
 
-import FormGroup from '../controls/FormGroup';
-import validate from './../../helpers/validator';
+import FormGroup from '../FormGroup';
+import { auth } from '../../firebase';
+import * as routes from '../../routes';
 
 import styles from './forms.scss';
 
-const RegistrationForm = ({
-  handleSubmit, 
-  pristine, 
-  submitting
-}) => (
-  <form className={styles.form} onSubmit={handleSubmit}>
-    <Field
-      id="firstName"
-      name="firstName"
-      component={FormGroup}
-      inputType="text"
-      placeholder="First Name"
-      labelText="First Name"
-    />
-    <Field
-      id="lastName"
-      name="lastName"
-      component={FormGroup}
-      inputType="text"
-      placeholder="Last Name"
-      labelText="Last Name"
-    />
-    <Field
-      id="userName"
-      name="userName"
-      component={FormGroup}
-      inputType="text"
-      placeholder="User Name"
-      labelText="User Name"
-    />
-    <Field
-      id="password"
-      name="password"
-      component={FormGroup}
-      inputType="password"
-      placeholder="Password"
-      labelText="Password"
-    />
-    <button 
-      className={styles.confirmBtn} 
-      type="submit" 
-      disabled={pristine || submitting}
-    >
-      Submit
-    </button>
-  </form>
-);
-
-RegistrationForm.propTypes = {
-  handleSubmit             : PropTypes.func.isRequired, 
-  pristine                 : PropTypes.bool.isRequired,
-  submitting               : PropTypes.bool.isRequired
+const INITIAL_STATE = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  error: null,
 };
 
-export default reduxForm({
-  form: 'registration',
-  validate
-})(RegistrationForm);
+class RegistrationForm extends Component {
+  state = { ...INITIAL_STATE };
+
+  handleInputChange = e => {
+    const {name, value} = e.target;
+
+    this.setState({ [name]: value });
+  };
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+    const { history } = this.props;
+
+    auth
+      .doCreateUserWithEmailAndPassword(email, password)
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+        history.push(routes.SIGN_IN);
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
+  }
+
+  render () {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      error
+    } = this.state;
+
+    const isInvalid =
+      firstName === '' ||
+      lastName === '' ||
+      email === '' ||
+      password === '';
+
+    return (
+      <form className={styles.form} onSubmit={this.handleFormSubmit}>
+        <FormGroup
+          id="firstName"
+          name="firstName"
+          placeholder="First Name"
+          labelText="First Name"
+          value={firstName}
+          handleInputChange={this.handleInputChange}
+        />
+        <FormGroup
+          id="lastName"
+          name="lastName"
+          placeholder="Last Name"
+          labelText="Last Name"
+          value={lastName}
+          handleInputChange={this.handleInputChange}
+        />
+        <FormGroup
+          id="email"
+          name="email"
+          inputType="email"
+          placeholder="Email"
+          labelText="Email"
+          value={email}
+          handleInputChange={this.handleInputChange}
+        />
+        <FormGroup
+          id="password"
+          name="password"
+          inputType="password"
+          placeholder="Password"
+          labelText="Password"
+          value={password}
+          handleInputChange={this.handleInputChange}
+        />
+        <button 
+          className={styles.confirmBtn}
+          disabled={isInvalid}
+          type="submit" 
+        >
+          Sign Up
+        </button>
+
+        {error && <p>{error.message}</p>}
+      </form>
+    );
+  }
+}
+
+RegistrationForm.propTypes = {
+  history: PropTypes.object.isRequired
+};
+
+export default withRouter(RegistrationForm);
