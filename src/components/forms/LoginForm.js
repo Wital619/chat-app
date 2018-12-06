@@ -41,44 +41,41 @@ class LoginForm extends Component {
   }
 
   render () {
-    const {
-      email,
-      password,
-      error
-    } = this.state;
-
+    const { email, password, error } = this.state;
     const isInvalid = email === '' || password === '';
 
     return (
-      <form className={styles.form} onSubmit={this.handleFormSubmit}>
-        <FormGroup
-          id="email"
-          name="email"
-          inputType="email"
-          placeholder="Email"
-          labelText="Email"
-          value={email}
-          handleInputChange={this.handleInputChange}
-        />
-        <FormGroup
-          id="password"
-          name="password"
-          inputType="password"
-          placeholder="Password"
-          labelText="Password"
-          value={password}
-          handleInputChange={this.handleInputChange}
-        />
-        <button 
-          className={styles.confirmBtn}
-          disabled={isInvalid}
-          type="submit" 
-        >
-          Sign in
-        </button>
+      <div className={styles.formWrapper}>
+        <form className={styles.form} onSubmit={this.handleFormSubmit}>
+          <FormGroup
+            id="email"
+            name="email"
+            inputType="email"
+            placeholder="Email"
+            labelText="Email"
+            value={email}
+            handleInputChange={this.handleInputChange}
+          />
+          <FormGroup
+            id="password"
+            name="password"
+            inputType="password"
+            placeholder="Password"
+            labelText="Password"
+            value={password}
+            handleInputChange={this.handleInputChange}
+          />
+          <button 
+            className={styles.confirmBtn}
+            disabled={isInvalid}
+            type="submit" 
+          >
+            Sign in
+          </button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+          {error && <p>{error.message}</p>}
+        </form>
+      </div>
     );
   }
 }

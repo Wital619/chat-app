@@ -1,5 +1,16 @@
 @import '../../styles/mixins';
-@import '../../styles//colors';
+@import '../../styles/colors';
+
+.form-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: $form-width;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #22252a;
+}
 
 .form {
   display: flex;

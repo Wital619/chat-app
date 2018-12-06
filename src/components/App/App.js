@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 import Header from '../Header';
@@ -13,7 +13,7 @@ import * as routes from '../../routes';
 
 const App = () => (
   <Router>
-    <div>
+    <Fragment>
       <Header />
       <Switch>
         <Route exact path={routes.BASE} render={props => 
@@ -23,7 +23,7 @@ const App = () => (
         <Route path={routes.SIGN_IN} component={() => <LoginForm />} />
         <Route path={routes.CHAT} component={() => <Chat />} />
       </Switch>
-    </div>
+    </Fragment>
   </Router>
 );
 

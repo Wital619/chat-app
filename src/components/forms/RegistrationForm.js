@@ -58,51 +58,53 @@ class RegistrationForm extends Component {
       password === '';
 
     return (
-      <form className={styles.form} onSubmit={this.handleFormSubmit}>
-        <FormGroup
-          id="firstName"
-          name="firstName"
-          placeholder="First Name"
-          labelText="First Name"
-          value={firstName}
-          handleInputChange={this.handleInputChange}
-        />
-        <FormGroup
-          id="lastName"
-          name="lastName"
-          placeholder="Last Name"
-          labelText="Last Name"
-          value={lastName}
-          handleInputChange={this.handleInputChange}
-        />
-        <FormGroup
-          id="email"
-          name="email"
-          inputType="email"
-          placeholder="Email"
-          labelText="Email"
-          value={email}
-          handleInputChange={this.handleInputChange}
-        />
-        <FormGroup
-          id="password"
-          name="password"
-          inputType="password"
-          placeholder="Password"
-          labelText="Password"
-          value={password}
-          handleInputChange={this.handleInputChange}
-        />
-        <button 
-          className={styles.confirmBtn}
-          disabled={isInvalid}
-          type="submit" 
-        >
-          Sign Up
-        </button>
+      <div className={styles.formWrapper}>
+        <form className={styles.form} onSubmit={this.handleFormSubmit}>
+          <FormGroup
+            id="firstName"
+            name="firstName"
+            placeholder="First Name"
+            labelText="First Name"
+            value={firstName}
+            handleInputChange={this.handleInputChange}
+          />
+          <FormGroup
+            id="lastName"
+            name="lastName"
+            placeholder="Last Name"
+            labelText="Last Name"
+            value={lastName}
+            handleInputChange={this.handleInputChange}
+          />
+          <FormGroup
+            id="email"
+            name="email"
+            inputType="email"
+            placeholder="Email"
+            labelText="Email"
+            value={email}
+            handleInputChange={this.handleInputChange}
+          />
+          <FormGroup
+            id="password"
+            name="password"
+            inputType="password"
+            placeholder="Password"
+            labelText="Password"
+            value={password}
+            handleInputChange={this.handleInputChange}
+          />
+          <button 
+            className={styles.confirmBtn}
+            disabled={isInvalid}
+            type="submit" 
+          >
+            Sign Up
+          </button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+          {error && <p>{error.message}</p>}
+        </form>
+      </div>
     );
   }
 }

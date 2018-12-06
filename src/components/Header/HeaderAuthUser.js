@@ -1,17 +1,18 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import SignOutButton from '../SignOutButton';
+import { auth } from '../../firebase';
 
 import * as routes from '../../routes';
+import styles from './Header.scss';
 
 const HeaderAuthUser = () => (
-  <ul>
-    <li>
+  <ul className={styles.nav}>
+    <li className={styles.navItem}>
       <Link to={routes.CHAT}>Chat</Link>
     </li>
-    <li>
-      <SignOutButton />
+    <li className={styles.navItem}>
+      <a onClick={auth.doSignOut}>Sign Out</a>
     </li>
   </ul>
 );
