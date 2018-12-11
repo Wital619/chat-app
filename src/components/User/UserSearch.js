@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './UserSearch.scss';
+import styles from './user.scss';
 
 const UserSearch = () => (
   <form className={styles.userSearchForm}>

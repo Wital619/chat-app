@@ -1,0 +1,88 @@
+@import '../../styles/colors';
+
+.user {
+  &-header {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &-display-name {
+    margin: 0 0 5px 0;
+    color: #b3b3b3;
+  }
+
+  &-email {
+    font-style: italic;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  &-item {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 70px;
+    padding: 15px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #efefef;
+    }
+  }
+
+  &-selected-item {
+    background-color: red;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  &-search-form {
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    margin-top: auto;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  &-search-input {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+}
+
+.another-user-name {
+  margin: 0 0 5px;
+  color: #b3b3b3;
+}
+
+.last-message {
+  margin: 0;
+  color: $grey-darken;
+  display: inline-block;
+  width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

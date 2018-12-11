@@ -52,19 +52,19 @@ class MessageContainer extends Component {
     setMessagesLimit(limit + 5);
   }
 
-  handleMessages = () => {
+  addUserToMessages = () => {
     const {messages, users} = this.props;
 
-    const mess = messages.map(message => {
+    return messages.map(message => {
+      const foundUser = users.find(user => user.uid === message.userId);
+
       return {
         ...message,
-        user: users
-          ? users[message.userId].displayName
-          : null,
+        user: users && users.length 
+          ? foundUser.displayName 
+          : null
       };
     });
-
-    return mess;
   };
 
   render () {
@@ -82,7 +82,7 @@ class MessageContainer extends Component {
         )}
 
         {messages && (
-          <MessageList messages={this.handleMessages()} />
+          <MessageList messages={this.addUserToMessages()} />
         )}
 
         {!messages && <div>There are no messages ...</div>}
@@ -93,22 +93,24 @@ class MessageContainer extends Component {
 
 MessageContainer.propTypes = {
   firebase         : PropTypes.object.isRequired,
-  users            : PropTypes.object,
-  authUser         : PropTypes.object,
+  users            : PropTypes.array,
   messages         : PropTypes.array,
   limit            : PropTypes.number.isRequired,
   setMessages      : PropTypes.func.isRequired,
   setMessagesLimit : PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  authUser: state.user.authUser,
-  limit: state.message.limit,
-  messages: Object.keys(state.message.messages || {})
+const addUidToMessages = messages => {
+  return Object.keys(messages || {})
     .map(key => ({
-      ...state.message.messages[key],
+      ...messages[key],
       uid: key
-    })),
+    }));
+};
+
+const mapStateToProps = state => ({
+  limit: state.message.limit,
+  messages: addUidToMessages(state.message.messages)
 });
 
 const mapDispatchToProps = {
