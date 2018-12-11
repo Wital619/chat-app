@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import {compose} from 'redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../FormGroup';
-import { auth } from '../../firebase';
-import * as routes from '../../routes';
+import {withFirebase} from '../Firebase';
 
+import * as routes from '../../routes';
 import styles from './forms.scss';
 
 const INITIAL_STATE = {
@@ -27,9 +28,9 @@ class LoginForm extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const { history } = this.props;
+    const { firebase, history } = this.props;
 
-    auth
+    firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -81,7 +82,11 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  history: PropTypes.object.isRequired
+  history           : PropTypes.object.isRequired,
+  firebase          : PropTypes.object.isRequired
 };
 
-export default withRouter(LoginForm);
+export default compose(
+  withFirebase,
+  withRouter
+)(LoginForm);

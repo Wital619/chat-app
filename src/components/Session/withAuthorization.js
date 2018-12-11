@@ -1,38 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
-import { firebase } from '../../firebase';
-
+import { withFirebase } from '../Firebase';
 import * as routes from '../../routes';
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
-    static contextTypes = {
-      authUser: PropTypes.object
-    }
-
-    static propTypes = {
-      history: PropTypes.object
-    }
-
     componentDidMount () {
-      const {history} = this.props;
-      
-      firebase.auth.onAuthStateChanged(authUser => {
-        if (!condition(authUser)) {
-          history.push(routes.SIGN_IN);
-        }
-      });
+      const {firebase, history} = this.props;
+
+      this.listener = firebase.onAuthUserListener(
+        authUser => {
+          if (!condition(authUser)) {
+            history.push(routes.SIGN_IN);
+          }
+        },
+        () => history.push(routes.SIGN_IN),
+      );
+    }
+
+    componentWillUnmount () {
+      this.listener();
     }
 
     render () {
-      return this.context.authUser ? <Component /> : null;
+      return condition(this.props.authUser) ? (
+        <Component {...this.props} />
+      ) : null;
     }
   }
 
+  const mapStateToProps = state => ({
+    authUser: state.session.authUser,
+  });
 
-  return withRouter(WithAuthorization);
+  return compose(
+    withRouter,
+    withFirebase,
+    connect(mapStateToProps),
+  )(WithAuthorization);
 };
 
 export default withAuthorization;

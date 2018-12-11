@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import {compose} from 'redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../FormGroup';
-import { auth } from '../../firebase';
-import * as routes from '../../routes';
+import {withFirebase} from '../Firebase';
 
+import * as routes from '../../routes';
 import styles from './forms.scss';
 
 const INITIAL_STATE = {
@@ -28,14 +29,20 @@ class RegistrationForm extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
 
-    const { email, password } = this.state;
-    const { history } = this.props;
+    const { email, password, firstName, lastName } = this.state;
+    const { firebase, history } = this.props;
 
-    auth
-      .doCreateUserWithEmailAndPassword(email, password)
+    firebase.doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        const displayName = `${firstName} ${lastName}`;
+
+        return firebase
+          .getUser(authUser.user.uid)
+          .set({ displayName });
+      })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        history.push(routes.SIGN_IN);
+        history.push(routes.CHAT);
       })
       .catch(error => {
         this.setState({ error });
@@ -43,19 +50,8 @@ class RegistrationForm extends Component {
   }
 
   render () {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      error
-    } = this.state;
-
-    const isInvalid =
-      firstName === '' ||
-      lastName === '' ||
-      email === '' ||
-      password === '';
+    const {firstName, lastName, email, password, error} = this.state;
+    const isInvalid = firstName === '' || lastName === '' || email === '' || password === '';
 
     return (
       <div className={styles.formWrapper}>
@@ -110,7 +106,11 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  history: PropTypes.object.isRequired
+  history                  : PropTypes.object.isRequired,
+  firebase                 : PropTypes.object.isRequired
 };
 
-export default withRouter(RegistrationForm);
+export default compose(
+  withFirebase,
+  withRouter
+)(RegistrationForm);

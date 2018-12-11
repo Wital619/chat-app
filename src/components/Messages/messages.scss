@@ -1,0 +1,45 @@
+.message-form {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  margin-top: auto;
+  border-top: 1px solid #e0e0e0;
+}
+
+.message-input {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 15px 0;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.load-more-btn {
+  flex: none;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.message-item {
+  flex: none;
+  height: 70px;
+  border-bottom: 1px solid #f2f2f2;
+  background-color: #ccc;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
