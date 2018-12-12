@@ -16,10 +16,14 @@ import styles from './Chat.scss';
 
 class Chat extends Component {
   componentDidMount () {
-    const {firebase, setUsers} = this.props;
+    const {firebase, setUsers, authUser} = this.props;
 
     firebase.getUsers().on('value', snapshot => {
-      setUsers(snapshot.val());
+      const users = Object
+        .values(snapshot.val())
+        .filter(user => user.id !== authUser.id);
+
+      setUsers(users);
     });
   }
 
@@ -28,22 +32,30 @@ class Chat extends Component {
   }
 
   render () {
-    const {users, firebase, authUser, selectedUser} = this.props;
+    const {users, authUser, selectedUser} = this.props;
 
     return (
       <main className={styles.main}>
         <aside className={styles.roomSection}>
           <UserHeader authUser={authUser} />
-          <UserList users={users} />
+          <UserList 
+            users={users} 
+            selectedUser={selectedUser}
+            authUser={authUser}
+          />
           <UserSearch />
         </aside>
         <section className={styles.messageSection}>
           <ReceiverHeader selectedUser={selectedUser} />
           <MessageContainer 
-            users={users} 
-            firebase={firebase} 
+            users={users}
+            selectedUser={selectedUser}
+            authUser={authUser}
           />
-          <MessageInput firebase={firebase} authUser={authUser} />
+          <MessageInput 
+            selectedUser={selectedUser}
+            authUser={authUser}
+          />
         </section>
       </main>
     );
@@ -58,16 +70,8 @@ Chat.propTypes = {
   setUsers     : PropTypes.func
 };
 
-const transformUsersObject = users => {
-  return Object.keys(users || {})
-    .map(key => ({
-      ...users[key],
-      uid: key
-    }));
-};
-
 const mapStateToProps = state => ({
-  users          : transformUsersObject(state.user.users),
+  users          : state.user.users,
   authUser       : state.session.authUser,
   selectedUser   : state.user.selectedUser
 });

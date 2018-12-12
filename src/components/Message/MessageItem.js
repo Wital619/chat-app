@@ -7,8 +7,9 @@ const MessageItem = ({message}) => {
 
   return (
     <li className={styles.messageItem}>
-      <strong>{message.user}</strong>
-      {message.text}
+      <div>{message.sender.displayName}</div>
+      <div>{message.timestamp}</div>
+      <div>{message.text}</div>
     </li>
   );
 };

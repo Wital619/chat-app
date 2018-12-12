@@ -35,25 +35,20 @@ class Firebase {
         this.getUser(authUser.uid)
           .once('value')
           .then(snapshot => {
-            const userData = snapshot.val();
-
-            authUser = {
-              uid: authUser.uid,
-              email: authUser.email,
-              displayName: userData.displayName
-            };
-
-            next(authUser);
+            next({
+              ...snapshot.val() 
+            });
           });
       } else {
         fallback();
       }
     });
 
-  getUser = uid => this.db.ref(`users/${uid}`);
+  getUser = id => this.db.ref(`users/${id}`);
   getUsers = () => this.db.ref('users');
-  getMessage = uid => this.db.ref(`messages/${uid}`);
+  getMessage = id => this.db.ref(`messages/${id}`);
   getMessages = () => this.db.ref('messages');
+  getRoomMessages = commonid => this.db.ref(`rooms/${commonid}`);
 }
 
 export default Firebase;

@@ -4,29 +4,21 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase';
 
-// import {setAuthUser} from '../../store/reducers/session';
+import {setAuthUser} from '../../store/reducers/session';
 
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
-    constructor (...args) {
-      super(...args);
-
-      this.props.onSetAuthUser(
-        JSON.parse(localStorage.getItem('authUser')),
-      );
-    }
-
     componentDidMount () {
-      const {firebase, onSetAuthUser} = this.props;
+      const {firebase, setAuthUser} = this.props;
 
       this.listener = firebase.onAuthUserListener(
         authUser => {
           localStorage.setItem('authUser', JSON.stringify(authUser));
-          onSetAuthUser(authUser);
+          setAuthUser(authUser);
         },
         () => {
           localStorage.removeItem('authUser');
-          onSetAuthUser(null);
+          setAuthUser(null);
         },
       );
     }
@@ -40,10 +32,9 @@ const withAuthentication = Component => {
     }
   }
 
-  const mapDispatchToProps = dispatch => ({
-    onSetAuthUser: payload =>
-      dispatch({ type: 'AUTH_USER_SET', payload }),
-  });
+  const mapDispatchToProps = {
+    setAuthUser
+  };
 
   return compose(
     withFirebase,

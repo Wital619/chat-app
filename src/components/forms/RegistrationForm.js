@@ -33,12 +33,15 @@ class RegistrationForm extends Component {
     const { firebase, history } = this.props;
 
     firebase.doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
+      .then(({ user }) => {
         const displayName = `${firstName} ${lastName}`;
 
-        return firebase
-          .getUser(authUser.user.uid)
-          .set({ displayName });
+        return firebase.getUser(user.uid)
+          .set({
+            id: user.uid,
+            email: user.email,
+            displayName
+          });
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });

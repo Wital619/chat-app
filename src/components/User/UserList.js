@@ -5,24 +5,72 @@ import PropTypes from 'prop-types';
 import UserItem from './UserItem';
 
 import {selectUser} from '../../store/reducers/user';
+import {setCurrentRoomMessages} from '../../store/reducers/room';
 
 import styles from './user.scss';
+import { compose } from 'redux';
+import { withFirebase } from '../Firebase';
 
 class UserList extends Component {
-  
+  componentDidMount () {
+    this.onListenForMessages();
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedUser.id !== this.props.selectedUser.id) {
+      this.onListenForMessages();
+    }
+  }
+
+  doSelectUser = selectedUser => {
+    this.props.selectUser(selectedUser);
+  };
+
+  onListenForMessages = () => {
+    const {
+      firebase, 
+      setCurrentRoomMessages, 
+      authUser,
+      selectedUser
+    } = this.props;
+
+    const roomId = selectedUser.id < authUser.id 
+      ? selectedUser.id + authUser.id 
+      : authUser.id + selectedUser.id;
+
+    firebase
+      .getRoomMessages(roomId)
+      .on('value', snapshot => {
+        const messagesObject = snapshot.val();
+
+        const messages = Object.keys(messagesObject || {})
+          .map(messageId => {
+            const timestamp = new Date(messagesObject[messageId].timestamp)
+              .toLocaleString();
+            
+            return {
+              ...messagesObject[messageId],
+              messageId,
+              timestamp
+            };
+          });
+
+        if (messages) {
+          setCurrentRoomMessages(messages);
+        }
+      });
+  };
+
   render () {
-    const {users, selectUser, selectedUser} = this.props;
+    const {users} = this.props;
 
     return (
       <ul className={styles.userList}>
-        {users.map(user => {
-          const isItSelectedUser = user.uid === selectedUser;
-
+        {users && users.map(user => {
           return (
             <UserItem 
-              key={user.uid} 
-              selectUser={selectUser}
-              isItSelectedUser={isItSelectedUser}
+              key={user.id} 
+              selectUser={this.doSelectUser}
               user={user}
             />
           );
@@ -33,17 +81,24 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-  users            : PropTypes.array,
-  selectedUser  : PropTypes.object,
-  selectUser    : PropTypes.func.isRequired
+  firebase               : PropTypes.object,
+  users                  : PropTypes.array,
+  selectUser             : PropTypes.func.isRequired,
+  authUser               : PropTypes.object.isRequired,
+  selectedUser           : PropTypes.object,
+  setCurrentRoomMessages : PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  selectedUser  : state.user.selectedUser
+  selectedUser : state.user.selectedUser
 });
 
 const mapDispatchToProps = {
-  selectUser
+  selectUser,
+  setCurrentRoomMessages
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default compose(
+  withFirebase,
+  connect(mapStateToProps, mapDispatchToProps)
+)(UserList);

@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 
+import { withFirebase } from '../Firebase';
+
+import {selectUser} from '../../store/reducers/user';
 import styles from './messages.scss';
 
 class MessageInput extends Component {
@@ -13,13 +18,22 @@ class MessageInput extends Component {
   handleMessageCreate = e => {
     e.preventDefault();
 
-    const {firebase, authUser} = this.props;
+    const {firebase, authUser, selectedUser} = this.props;
 
-    firebase.getMessages().push({
-      text: this.state.inputValue,
-      userId: authUser.uid ,
-      createdAt: firebase.serverValue.TIMESTAMP
-    });
+    if (authUser.id && selectedUser.id) {
+      const roomId = selectedUser.id < authUser.id 
+        ? selectedUser.id + authUser.id 
+        : authUser.id + selectedUser.id;
+
+      firebase.getRoomMessages(roomId).push({
+        text: this.state.inputValue,
+        sender: { 
+          id: authUser.id, 
+          displayName: authUser.displayName 
+        },
+        timestamp: firebase.serverValue.TIMESTAMP
+      });
+    }
 
     this.setState({ inputValue: '' });
   };
@@ -41,8 +55,16 @@ class MessageInput extends Component {
 }
 
 MessageInput.propTypes = {
-  firebase             : PropTypes.object.isRequired,
-  authUser             : PropTypes.object
+  firebase             : PropTypes.object,
+  authUser             : PropTypes.object,
+  selectedUser         : PropTypes.object
 };
 
-export default MessageInput;
+const mapDispatchToProps = {
+  selectUser
+};
+
+export default compose(
+  withFirebase,
+  connect(null, mapDispatchToProps)
+)(MessageInput);

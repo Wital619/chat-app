@@ -4,7 +4,7 @@ const INITIAL_STATE = {
 
 export const AUTH_USER_SET = 'AUTH_USER_SET';
 
-export const setUserAuth = payload => ({ type: AUTH_USER_SET, payload });
+export const setAuthUser = payload => ({ type: AUTH_USER_SET, payload });
 
 export default function sessionReducer (state = INITIAL_STATE, action) {
   switch (action.type) {

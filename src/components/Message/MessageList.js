@@ -12,7 +12,7 @@ const MessageList = ({
     {messages.map(message => {
       return (
         <MessageItem
-          key={message.uid}
+          key={message.messageId}
           message={message}
         /> 
       );

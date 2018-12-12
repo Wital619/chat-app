@@ -1,8 +1,9 @@
 const INITIAL_STATE = {
-  users: null,
+  users: [],
   selectedUser: {
-    uid: null,
-    displayName: null
+    id: null,
+    displayName: null,
+    email: null
   }
 };
 
@@ -36,7 +37,7 @@ export default function userReducer (state = INITIAL_STATE, action) {
         ...state,
         users: {
           ...state.users,
-          [action.uid]: action.payload,
+          [action.id]: action.payload,
         }
       };
     }

@@ -5,14 +5,12 @@ import styles from './user.scss';
 
 const UserItem = ({
   selectUser,
-  isItSelectedUser,
   user
 }) => {
-  const userItemClasses = `${styles.userItem} ${isItSelectedUser ? styles.userSelectedItem : null}`;
 
   return (
     <li 
-      className={userItemClasses} 
+      className={styles.userItem} 
       onClick={() => selectUser(user)}
     >
       <h4 className={styles.anotherUserName}>{user.displayName}</h4>
@@ -23,7 +21,6 @@ const UserItem = ({
 
 UserItem.propTypes = {
   user             : PropTypes.object.isRequired,
-  isItSelectedUser : PropTypes.bool.isRequired,
   selectUser       : PropTypes.func.isRequired
 };
 
