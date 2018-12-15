@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 const config = {
   apiKey: process.env.API_KEY,
@@ -19,6 +20,7 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
+    this.storage = app.storage();
   }
 
   doCreateUserWithEmailAndPassword = (email, password) =>
@@ -44,11 +46,13 @@ class Firebase {
       }
     });
 
-  getUser = id => this.db.ref(`users/${id}`);
   getUsers = () => this.db.ref('users');
-  getMessage = id => this.db.ref(`messages/${id}`);
-  getMessages = () => this.db.ref('messages');
+  getUser = id => this.db.ref(`users/${id}`);
+  getUserRooms = id => this.db.ref(`users/${id}/rooms`);
+
   getRoomMessages = commonid => this.db.ref(`rooms/${commonid}`);
+
+  getImage = filename => this.storage.ref(`images/${filename}`);
 }
 
 export default Firebase;

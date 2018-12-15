@@ -2,8 +2,8 @@ import React, {Fragment} from 'react';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 
 import Header from '../Header';
-import RegistrationForm from '../forms/RegistrationForm';
-import LoginForm from '../forms/LoginForm';
+import RegistrationForm from '../Form/RegistrationForm';
+import LoginForm from '../Form/LoginForm';
 import Chat from '../Chat';
 
 import {withAuthentication} from '../Session';

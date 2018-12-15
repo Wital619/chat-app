@@ -1,0 +1,105 @@
+@import '../../styles/mixins';
+@import '../../styles/colors';
+
+.form-wrapper {
+  align-self: center;
+  width: $form-width;
+  margin: 50px 0;
+  border-radius: 5px;
+  background-color: #22252a;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.confirm-btn {
+  @include be-btn;
+
+  align-self: center;
+  background-color: #2c9dd6;
+
+  &:hover {
+    background-color: #268ec3;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+
+    &:hover {
+      background-color: #2c9dd6;
+    }
+  }
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: $grey-lighten;
+
+  &::after {
+    content: '*';
+    color: #f00;
+    font-size: 16px;
+  }
+}
+
+.form-input {
+  width: 100%;
+  height: 33px;
+  border-radius: 5px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  outline: none;
+  background-color: #454955;
+  color: #b3b3b3;
+
+  &:focus {
+    border-color: $grey-lighten;
+  }
+
+  &::placeholder {
+    color: #717479;
+  }
+
+  &-error {
+    border: 1px solid red;
+  }
+}
+
+/* .avatar-group {
+  text-align: center;
+}
+
+.avatar-label {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 3px;
+  padding: 8px 10px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  color: $grey-lighten;
+  border: 1px solid transparent;
+  background-color: #454955;
+  cursor: pointer;
+
+  &:active {
+    border-color: $grey-lighten;
+  }
+} */
+
+.error-block {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+  color: #f00;
+}

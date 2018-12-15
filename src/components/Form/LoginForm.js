@@ -3,11 +3,11 @@ import {compose} from 'redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import FormGroup from '../FormGroup';
+import FormGroup from './FormGroup';
 import {withFirebase} from '../Firebase';
 
 import * as routes from '../../routes';
-import styles from './forms.scss';
+import styles from './form.scss';
 
 const INITIAL_STATE = {
   email: '',
@@ -24,21 +24,20 @@ class LoginForm extends Component {
     this.setState({ [name]: value });
   };
 
-  handleFormSubmit = e => {
+  handleFormSubmit = async e => {
     e.preventDefault();
 
     const { email, password } = this.state;
     const { firebase, history } = this.props;
 
-    firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        history.push(routes.CHAT);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+    try {
+      await firebase.doSignInWithEmailAndPassword(email, password);
+
+      this.setState({ ...INITIAL_STATE });
+      history.push(routes.CHAT);
+    } catch (error) {
+      this.setState({ error });
+    }
   }
 
   render () {
@@ -74,7 +73,7 @@ class LoginForm extends Component {
             Sign in
           </button>
 
-          {error && <p>{error.message}</p>}
+          {error && <div className={styles.errorBlock}>{error.message}</div>}
         </form>
       </div>
     );

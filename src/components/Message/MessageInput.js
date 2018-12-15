@@ -33,6 +33,16 @@ class MessageInput extends Component {
         },
         timestamp: firebase.serverValue.TIMESTAMP
       });
+
+      firebase
+        .getUserRooms(authUser.id)
+        .child(selectedUser.id)
+        .set(selectedUser.id);
+
+      firebase
+        .getUserRooms(selectedUser.id)
+        .child(authUser.id)
+        .set(authUser.id);
     }
 
     this.setState({ inputValue: '' });

@@ -41,7 +41,6 @@ class MessageContainer extends Component {
 
 MessageContainer.propTypes = {
   firebase               : PropTypes.object.isRequired,
-  users                  : PropTypes.array,
   selectedUser           : PropTypes.object,
   authUser               : PropTypes.object,
   setCurrentRoomMessages : PropTypes.func.isRequired,

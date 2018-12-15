@@ -12,10 +12,6 @@ import { compose } from 'redux';
 import { withFirebase } from '../Firebase';
 
 class UserList extends Component {
-  componentDidMount () {
-    this.onListenForMessages();
-  }
-
   componentDidUpdate (prevProps) {
     if (prevProps.selectedUser.id !== this.props.selectedUser.id) {
       this.onListenForMessages();
@@ -90,7 +86,7 @@ UserList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  selectedUser : state.user.selectedUser
+  users     : state.user.users
 });
 
 const mapDispatchToProps = {

@@ -3,11 +3,11 @@ import {compose} from 'redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import FormGroup from '../FormGroup';
+import FormGroup from './FormGroup';
 import {withFirebase} from '../Firebase';
 
 import * as routes from '../../routes';
-import styles from './forms.scss';
+import styles from './form.scss';
 
 const INITIAL_STATE = {
   firstName: '',
@@ -26,30 +26,29 @@ class RegistrationForm extends Component {
     this.setState({ [name]: value });
   };
 
-  handleFormSubmit = e => {
+  handleFormSubmit = async e => {
     e.preventDefault();
 
     const { email, password, firstName, lastName } = this.state;
     const { firebase, history } = this.props;
 
-    firebase.doCreateUserWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        const displayName = `${firstName} ${lastName}`;
+    try {
+      const photoURL = await firebase.getImage('empry-icon.png').getDownloadURL();
+      const {user} = await firebase.doCreateUserWithEmailAndPassword(email, password);
 
-        return firebase.getUser(user.uid)
-          .set({
-            id: user.uid,
-            email: user.email,
-            displayName
-          });
-      })
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        history.push(routes.CHAT);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+      await firebase.getUser(user.uid)
+        .set({
+          id: user.uid,
+          email: user.email,
+          displayName: `${firstName} ${lastName}`,
+          photoURL
+        });
+
+      this.setState({ ...INITIAL_STATE });
+      history.push(routes.CHAT);
+    } catch (error) {
+      this.setState({ error });
+    }
   }
 
   render () {
@@ -101,7 +100,7 @@ class RegistrationForm extends Component {
             Sign Up
           </button>
 
-          {error && <p>{error.message}</p>}
+          {error && <div className={styles.errorBlock}>{error.message}</div>}
         </form>
       </div>
     );
