@@ -17,3 +17,11 @@
     cursor: default;
   }
 }
+
+@mixin with-dots {
+  display: inline-block;
+  width: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

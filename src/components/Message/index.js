@@ -1,4 +1,4 @@
-import MessageContainer from './MessageContainer';
 import MessageInput from './MessageInput';
+import MessageList from './MessageList';
 
-export {MessageContainer, MessageInput};
+export {MessageList, MessageInput};

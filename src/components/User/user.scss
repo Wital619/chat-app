@@ -1,23 +1,40 @@
 @import '../../styles/colors';
+@import '../../styles/mixins';
 
 .user {
+  position: relative;
+
   &-header {
     flex: none;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 75px;
+    padding: 0 15px;
     border-bottom: 1px solid #e0e0e0;
   }
 
+  &-info {
+    width: 225px;
+  }
+
   &-display-name {
+    @include with-dots;
+
     margin: 0 0 5px 0;
     color: #b3b3b3;
   }
 
   &-email {
+    @include with-dots;
+
     font-style: italic;
+  }
+
+  &-avatar {
+    height: 75%;
+    border-radius: 50%;
+    margin-right: 10px;
   }
 
   &-list {
@@ -30,10 +47,10 @@
   &-item {
     flex: none;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
     height: 70px;
-    padding: 15px;
+    padding: 0 15px;
     border-bottom: 1px solid #f2f2f2;
     cursor: pointer;
 
@@ -43,6 +60,30 @@
 
     &:hover {
       background-color: #efefef;
+    }
+
+    &-avatar {
+      height: 75%;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    &-info {
+      width: 225px;
+    }
+
+    &-name {
+      @include with-dots;
+
+      margin: 0 0 5px;
+      color: #b3b3b3;
+    }
+
+    &-last-message {
+      @include with-dots;
+
+      margin: 0;
+      color: $grey-darken;
     }
   }
 
@@ -54,7 +95,25 @@
     }
   }
 
-  &-search-form {
+  &-central-notify {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 0 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #b3b3b3;
+  }
+}
+
+.user-search {
+  &-results {
+    position: absolute;
+  }
+
+  &-form {
     flex: none;
     display: flex;
     align-items: center;
@@ -63,26 +122,11 @@
     border-top: 1px solid #e0e0e0;
   }
 
-  &-search-input {
+  &-input {
     width: 100%;
     padding: 16px;
     border: none;
     outline: none;
     font-size: 16px;
   }
-}
-
-.another-user-name {
-  margin: 0 0 5px;
-  color: #b3b3b3;
-}
-
-.last-message {
-  margin: 0;
-  color: $grey-darken;
-  display: inline-block;
-  width: 280px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

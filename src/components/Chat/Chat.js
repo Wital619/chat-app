@@ -4,7 +4,7 @@ import {compose} from 'recompose';
 import PropTypes from 'prop-types';
 
 import ReceiverHeader from '../ReceiverHeader';
-import {MessageContainer, MessageInput} from '../Message';
+import {MessageList, MessageInput} from '../Message';
 import {UserHeader, UserSearch, UserList} from '../User';
 
 import {withFirebase} from '../Firebase';
@@ -58,7 +58,7 @@ class Chat extends Component {
   }
 
   render () {
-    const {authUser, selectedUser} = this.props;
+    const {authUser, selectedUser, firebase} = this.props;
 
     return (
       <main className={styles.main}>
@@ -67,12 +67,16 @@ class Chat extends Component {
           <UserList 
             selectedUser={selectedUser}
             authUser={authUser}
+            firebase={firebase}
           />
-          <UserSearch />
+          <UserSearch 
+            firebase={firebase}
+            authUser={authUser}
+          />
         </aside>
         <section className={styles.messageSection}>
           <ReceiverHeader selectedUser={selectedUser} />
-          <MessageContainer 
+          <MessageList 
             selectedUser={selectedUser}
             authUser={authUser}
           />
@@ -87,10 +91,10 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
-  firebase     : PropTypes.object,
-  authUser     : PropTypes.object,
+  firebase     : PropTypes.object.isRequired,
+  authUser     : PropTypes.object.isRequired,
   selectedUser : PropTypes.object,
-  setUsers     : PropTypes.func
+  setUsers     : PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

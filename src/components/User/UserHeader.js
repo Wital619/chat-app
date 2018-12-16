@@ -7,8 +7,21 @@ const UserHeader = ({
   authUser
 }) => (
   <header className={styles.userHeader}>
-    <h3 className={styles.userDisplayName}>{authUser.displayName}</h3>
-    <span className={styles.userEmail}>{authUser.email}</span>
+    <img className={styles.userAvatar} src={authUser.photoURL} alt='avatar' />
+    <div className={styles.userInfo}>
+      <h3 
+        className={styles.userDisplayName} 
+        title={authUser.displayName}
+      >
+        {authUser.displayName}
+      </h3>
+      <span 
+        className={styles.userEmail} 
+        title={authUser.email}
+      >
+        {authUser.email}
+      </span>
+    </div>
   </header>
 );
 

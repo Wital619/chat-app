@@ -9,12 +9,12 @@ const UserItem = ({
 }) => {
 
   return (
-    <li 
-      className={styles.userItem} 
-      onClick={() => selectUser(user)}
-    >
-      <h4 className={styles.anotherUserName}>{user.displayName}</h4>
-      <p className={styles.lastMessage}>Njer ojogre hgoeh oio ijej oerjo jgerjog e</p>
+    <li className={styles.userItem} onClick={() => selectUser(user)}>
+      <img className={styles.userItemAvatar} src={user.photoURL} alt='avatar' />
+      <div className={styles.userItemInfo}>
+        <h4 className={styles.userItemName} title={user.displayName}>{user.displayName}</h4>
+        <p className={styles.userItemLastMessage}>Njer ojogre hgoeh oio ijej oerjo jgerjog e</p>
+      </div>
     </li>
   );
 };

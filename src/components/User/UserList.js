@@ -8,8 +8,6 @@ import {selectUser} from '../../store/reducers/user';
 import {setCurrentRoomMessages} from '../../store/reducers/room';
 
 import styles from './user.scss';
-import { compose } from 'redux';
-import { withFirebase } from '../Firebase';
 
 class UserList extends Component {
   componentDidUpdate (prevProps) {
@@ -58,14 +56,34 @@ class UserList extends Component {
   };
 
   render () {
-    const {users} = this.props;
+    const {users, foundUsers} = this.props;
+    let usersList;
+
+    const showFoundUsers = foundUsers && foundUsers.length;
+    const showUsers = users.length && !foundUsers;
+    const showCorrespondedNotify = !users.length && !foundUsers;
+    const showNotFoundNotify = !users.length && foundUsers && !foundUsers.length;
+
+    if (showUsers) {
+      usersList = users;
+    } else if (showFoundUsers) {
+      usersList = foundUsers;
+    } else if (showCorrespondedNotify) {
+      return (
+        <div className={styles.userCentralNotify}>
+          You haven&apos;t corresponded with anyone
+        </div>
+      );
+    } else if (showNotFoundNotify) {
+      return <div className={styles.userCentralNotify}>Users not found</div>;
+    }
 
     return (
       <ul className={styles.userList}>
-        {users && users.map(user => {
+        {usersList.map(user => {
           return (
-            <UserItem 
-              key={user.id} 
+            <UserItem
+              key={user.id}
               selectUser={this.doSelectUser}
               user={user}
             />
@@ -77,8 +95,9 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-  firebase               : PropTypes.object,
+  firebase               : PropTypes.object.isRequired,
   users                  : PropTypes.array,
+  foundUsers             : PropTypes.array,
   selectUser             : PropTypes.func.isRequired,
   authUser               : PropTypes.object.isRequired,
   selectedUser           : PropTypes.object,
@@ -86,7 +105,8 @@ UserList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  users     : state.user.users
+  users       : state.user.users,
+  foundUsers  : state.search.foundUsers
 });
 
 const mapDispatchToProps = {
@@ -94,7 +114,4 @@ const mapDispatchToProps = {
   setCurrentRoomMessages
 };
 
-export default compose(
-  withFirebase,
-  connect(mapStateToProps, mapDispatchToProps)
-)(UserList);
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);
