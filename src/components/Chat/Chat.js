@@ -18,7 +18,7 @@ import styles from './Chat.scss';
 class Chat extends Component {
   componentDidMount () {
     this.props.firebase.getUsers().once('value');
-    
+
     this.onListenForUsers();
   }
 

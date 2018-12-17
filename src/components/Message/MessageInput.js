@@ -27,10 +27,7 @@ class MessageInput extends Component {
 
       firebase.getRoomMessages(roomId).push({
         text: this.state.inputValue,
-        sender: { 
-          id: authUser.id, 
-          displayName: authUser.displayName 
-        },
+        sender: {...authUser},
         timestamp: firebase.serverValue.TIMESTAMP
       });
 
@@ -58,6 +55,7 @@ class MessageInput extends Component {
           placeholder='Type a message...'
           value={this.state.inputValue}
           onChange={this.handleInputChange}
+          ref={node => node && node.focus()}
         />
       </form>
     );
