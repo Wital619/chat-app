@@ -13,6 +13,9 @@ const HeaderAuthUser = ({firebase}) => (
       <Link to={routes.CHAT}>Chat</Link>
     </li>
     <li className={styles.navItem}>
+      <Link to={routes.PROFILE}>Profile</Link>
+    </li>
+    <li className={styles.navItem}>
       <a onClick={firebase.doSignOut}>Sign Out</a>
     </li>
   </ul>

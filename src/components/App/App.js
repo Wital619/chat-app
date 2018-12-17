@@ -5,7 +5,7 @@ import Header from '../Header';
 import RegistrationForm from '../Form/RegistrationForm';
 import LoginForm from '../Form/LoginForm';
 import Chat from '../Chat';
-
+import Profile from '../Profile';
 import {withAuthentication} from '../Session';
 
 import * as routes from '../../routes';
@@ -21,6 +21,7 @@ const App = () => (
         <Route path={routes.SIGN_UP} component={RegistrationForm} />
         <Route path={routes.SIGN_IN} component={LoginForm} />
         <Route path={routes.CHAT} component={Chat} />
+        <Route path={routes.PROFILE} component={Profile} />
       </Switch>
     </Fragment>
   </BrowserRouter>
