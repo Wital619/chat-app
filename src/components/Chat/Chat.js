@@ -22,9 +22,9 @@ class Chat extends Component {
     this.onListenForUsers();
   }
 
-  componentDidUpdate () {
+  /* componentDidUpdate () {
     this.onListenForUsers();
-  }
+  } */
 
   componentWillUnmount () {
     this.props.firebase.getUserRooms().off();

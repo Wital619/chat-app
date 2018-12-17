@@ -11,7 +11,16 @@ import styles from './user.scss';
 
 class UserList extends Component {
   componentDidUpdate (prevProps) {
-    if (prevProps.selectedUser.id !== this.props.selectedUser.id) {
+    const {selectedUser, users} = this.props;
+
+
+    if (!this.isSelectedUserInit) {
+      this.doSelectUser(users[0]);
+
+      this.isSelectedUserInit = true;
+    }
+
+    if (prevProps.selectedUser.id !== selectedUser.id) {
       this.onListenForMessages();
     }
   }
@@ -56,13 +65,13 @@ class UserList extends Component {
   };
 
   render () {
-    const {users, foundUsers} = this.props;
+    const {users, foundUsers, selectedUser} = this.props;
     let usersList;
 
     const showFoundUsers = foundUsers && foundUsers.length;
     const showUsers = users.length && !foundUsers;
     const showCorrespondedNotify = !users.length && !foundUsers;
-    const showNotFoundNotify = !users.length && foundUsers && !foundUsers.length;
+    const showNotFoundNotify = foundUsers && !foundUsers.length;
 
     if (showUsers) {
       usersList = users;
@@ -85,6 +94,7 @@ class UserList extends Component {
             <UserItem
               key={user.id}
               selectUser={this.doSelectUser}
+              isItSelectedUser={user.id === selectedUser.id}
               user={user}
             />
           );
@@ -105,8 +115,9 @@ UserList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  users       : state.user.users,
-  foundUsers  : state.search.foundUsers
+  users         : state.user.users,
+  selectedUser  : state.user.selectedUser,
+  foundUsers    : state.search.foundUsers
 });
 
 const mapDispatchToProps = {

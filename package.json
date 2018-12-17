@@ -66,6 +66,7 @@
   "dependencies": {
     "firebase": "^5.6.0",
     "react": "^16.6.3",
+    "react-debounce-input": "^3.2.0",
     "react-dom": "^16.6.3",
     "react-image-crop": "^6.0.9"
   }

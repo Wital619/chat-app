@@ -5,11 +5,15 @@ import styles from './user.scss';
 
 const UserItem = ({
   selectUser,
-  user
+  user,
+  isItSelectedUser
 }) => {
+  const classNames = isItSelectedUser 
+    ? `${styles.userItem} ${styles.userSelectedItem}` 
+    : styles.userItem;
 
   return (
-    <li className={styles.userItem} onClick={() => selectUser(user)}>
+    <li className={classNames} onClick={() => selectUser(user)}>
       <img className={styles.userItemAvatar} src={user.photoURL} alt='avatar' />
       <div className={styles.userItemInfo}>
         <h4 className={styles.userItemName} title={user.displayName}>{user.displayName}</h4>
@@ -21,7 +25,8 @@ const UserItem = ({
 
 UserItem.propTypes = {
   user             : PropTypes.object.isRequired,
-  selectUser       : PropTypes.func.isRequired
+  selectUser       : PropTypes.func.isRequired,
+  isItSelectedUser : PropTypes.bool.isRequired
 };
 
 export default UserItem;

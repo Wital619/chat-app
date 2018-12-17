@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {DebounceInput} from 'react-debounce-input';
 
 import {handleFoundUsers} from '../../store/reducers/search';
 
@@ -10,8 +11,6 @@ class UserSearch extends Component {
   getUsersMatches = e => {
     const {firebase, handleFoundUsers, authUser} = this.props;
     const {value} = e.target;
-
-    // console.log(e.target.value);
 
     if (e.target.value) {
       firebase.getUsers()
@@ -36,12 +35,14 @@ class UserSearch extends Component {
   render () {
     return (
       <form className={styles.userSearchForm}>
-        <input 
+        <DebounceInput 
           className={styles.userSearchInput} 
           name='user-search' 
           title='user-search'
           placeholder='Seach users'
-          onKeyUp={this.getUsersMatches}
+          minLength={0}
+          debounceTimeout={300}
+          onChange={this.getUsersMatches}
         />
       </form>
     );
