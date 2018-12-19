@@ -8,28 +8,28 @@ const MessageItem = ({
   isCurrUserSender
 }) => {
 
-  const messageStyle = isCurrUserSender 
-    ? styles.messageTextAuthUser 
-    : styles.messageTextSelectedUser;
+  const messageClass = isCurrUserSender 
+    ? `${styles.messageText} ${styles.messageTextAuthUser}`
+    : `${styles.messageText} ${styles.messageTextSelectedUser}`;
 
-  const itemStyle = isCurrUserSender 
-    ? styles.messageItemAuthUser 
-    : null;
+  const itemClass = isCurrUserSender 
+    ? `${styles.messageItem} ${styles.messageItemAuthUser}` 
+    : `${styles.messageItem}`;
 
-  const imageStyle = isCurrUserSender 
-    ? styles.messageImgAuthUser 
-    : null;
+  const imageClass = isCurrUserSender 
+    ? `${styles.messageImg} ${styles.messageImgAuthUser}`
+    : `${styles.messageImg}`;
 
   return (
-    <li className={`${styles.messageItem} ${itemStyle}`}>
+    <li className={itemClass}>
       <img 
-        className={`${styles.messageImg} ${imageStyle}`} 
+        className={imageClass} 
         src={message.sender.photoURL} 
         title={message.sender.displayName} 
         alt='avatar' 
       />
       <div 
-        className={`${styles.messageText} ${messageStyle}`} 
+        className={messageClass} 
         title={message.timestamp}
       >
         {message.text}

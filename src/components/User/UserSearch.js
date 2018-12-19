@@ -3,17 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {DebounceInput} from 'react-debounce-input';
 
+import {firebase} from '../Firebase';
+
 import {handleFoundUsers} from '../../store/reducers/search';
 
 import styles from './user.scss';
 
 class UserSearch extends Component {
   getUsersMatches = e => {
-    const {firebase, handleFoundUsers, authUser} = this.props;
+    const {handleFoundUsers, authUser} = this.props;
     const {value} = e.target;
 
     if (e.target.value) {
-      firebase.getUsers()
+      firebase
+        .getUsers()
         .orderByChild('displayName')
         .startAt(value)
         .endAt(`${value}\uf8ff`)
@@ -50,7 +53,6 @@ class UserSearch extends Component {
 }
 
 UserSearch.propTypes = {
-  firebase          : PropTypes.object.isRequired,
   authUser          : PropTypes.object.isRequired,
   handleFoundUsers  : PropTypes.func.isRequired
 };

@@ -12,47 +12,42 @@ const config = {
   messagingSenderId: process.env.MESSAGING_SENDER_ID
 };
 
-class Firebase {
-  constructor () {
-    app.initializeApp(config);
+app.initializeApp(config);
 
-    this.serverValue = app.database.ServerValue;
+const auth = app.auth();
+const db = app.database();
+const storage = app.storage();
 
-    this.auth = app.auth();
-    this.db = app.database();
-    this.storage = app.storage();
-  }
+export const serverValue = app.database.ServerValue;
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+export const doCreateUserWithEmailAndPassword = (email, password) =>
+  auth.createUserWithEmailAndPassword(email, password);
 
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+export const doSignInWithEmailAndPassword = (email, password) =>
+  auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+export const doSignOut = () => auth.signOut();
 
-  onAuthUserListener = (next, fallback) =>
-    this.auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        this.getUser(authUser.uid)
-          .once('value')
-          .then(snapshot => {
-            next({
-              ...snapshot.val() 
-            });
+export const onAuthUserListener = (next, fallback) =>
+  auth.onAuthStateChanged(authUser => {
+    if (authUser) {
+      getUser(authUser.uid)
+        .once('value')
+        .then(snapshot => {
+          next({
+            ...snapshot.val() 
           });
-      } else {
-        fallback();
-      }
-    });
+        });
+    } else {
+      fallback();
+    }
+  });
 
-  getUsers = () => this.db.ref('users');
-  getUser = id => this.db.ref(`users/${id}`);
-  getUserRooms = id => this.db.ref(`users/${id}/rooms`);
+export const getUsers = () => db.ref('users');
+export const getUser = id => db.ref(`users/${id}`);
+export const getUserRooms = id => db.ref(`users/${id}/rooms`);
 
-  getRoomMessages = commonid => this.db.ref(`rooms/${commonid}`);
+export const getRoomMessages = roomId => db.ref(`rooms/${roomId}/messages`);
+export const getRoomLastMessage = roomId => db.ref(`rooms/${roomId}/last_message`);
 
-  getImage = filename => this.storage.ref(`images/${filename}`);
-}
-
-export default Firebase;
+export const getImage = filename => storage.ref(`images/${filename}`);

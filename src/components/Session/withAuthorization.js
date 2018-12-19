@@ -3,13 +3,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { withFirebase } from '../Firebase';
+import { firebase } from '../Firebase';
 import * as routes from '../../routes';
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount () {
-      const {firebase, history} = this.props;
+      const {history} = this.props;
 
       this.listener = firebase.onAuthUserListener(
         authUser => {
@@ -38,7 +38,6 @@ const withAuthorization = condition => Component => {
 
   return compose(
     withRouter,
-    withFirebase,
     connect(mapStateToProps),
   )(WithAuthorization);
 };

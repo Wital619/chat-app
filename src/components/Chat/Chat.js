@@ -7,7 +7,7 @@ import ReceiverHeader from '../ReceiverHeader';
 import {MessageList, MessageInput} from '../Message';
 import {UserHeader, UserSearch, UserList} from '../User';
 
-import {withFirebase} from '../Firebase';
+import {firebase} from '../Firebase';
 import {withAuthorization} from '../Session';
 
 import {setUsers} from '../../store/reducers/user';
@@ -17,29 +17,30 @@ import styles from './Chat.scss';
 
 class Chat extends Component {
   componentDidMount () {
-    this.props.firebase.getUsers().once('value');
+    this.onListenForUsers();
+  }
+
+  componentDidUpdate () {
+    firebase.getUsers().once('value');
 
     this.onListenForUsers();
   }
 
-  /* componentDidUpdate () {
-    this.onListenForUsers();
-  } */
-
   componentWillUnmount () {
-    this.props.firebase.getUserRooms().off();
+    firebase.getUserRooms().off();
   }
 
   onListenForUsers = () => {
-    const {firebase, setUsers, authUser} = this.props;
+    const {setUsers, authUser} = this.props;
 
-    firebase
-      .getUserRooms(authUser.id)
+    firebase.getUserRooms(authUser.id)
       .on('value', snapshot => {
         const usersIds = Object.keys(snapshot.val() || []);
 
         this.getUsersData(usersIds)
-          .then(users => setUsers(users));
+          .then(users => {
+            setUsers(users);
+          });
       });
   }
 
@@ -47,7 +48,7 @@ class Chat extends Component {
     const users = [];
 
     await usersIds.forEach(async userId => {
-      this.props.firebase
+      firebase
         .getUser(userId)
         .on('value', async snapshot => {
           await users.push(snapshot.val());
@@ -58,7 +59,7 @@ class Chat extends Component {
   }
 
   render () {
-    const {authUser, selectedUser, firebase} = this.props;
+    const {authUser, selectedUser} = this.props;
 
     return (
       <main className={styles.main}>
@@ -67,10 +68,8 @@ class Chat extends Component {
           <UserList 
             selectedUser={selectedUser}
             authUser={authUser}
-            firebase={firebase}
           />
           <UserSearch 
-            firebase={firebase}
             authUser={authUser}
           />
         </aside>
@@ -91,7 +90,6 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
-  firebase     : PropTypes.object.isRequired,
   authUser     : PropTypes.object.isRequired,
   selectedUser : PropTypes.object,
   setUsers     : PropTypes.func.isRequired
@@ -110,7 +108,6 @@ const mapDispatchToProps = {
 const condition = authUser => !!authUser;
 
 export default compose(
-  withFirebase,
   connect(mapStateToProps, mapDispatchToProps),
   withAuthorization(condition),
 )(Chat);

@@ -10,58 +10,18 @@ import {setCurrentRoomMessages} from '../../store/reducers/room';
 import styles from './user.scss';
 
 class UserList extends Component {
-  componentDidUpdate (prevProps) {
-    const {selectedUser, users} = this.props;
-
+  componentDidUpdate () {
+    const {users} = this.props;
 
     if (!this.isSelectedUserInit) {
       this.doSelectUser(users[0]);
 
       this.isSelectedUserInit = true;
     }
-
-    if (prevProps.selectedUser.id !== selectedUser.id) {
-      this.onListenForMessages();
-    }
   }
 
   doSelectUser = selectedUser => {
     this.props.selectUser(selectedUser);
-  };
-
-  onListenForMessages = () => {
-    const {
-      firebase, 
-      setCurrentRoomMessages, 
-      authUser,
-      selectedUser
-    } = this.props;
-
-    const roomId = selectedUser.id < authUser.id 
-      ? selectedUser.id + authUser.id 
-      : authUser.id + selectedUser.id;
-
-    firebase
-      .getRoomMessages(roomId)
-      .on('value', snapshot => {
-        const messagesObject = snapshot.val();
-
-        const messages = Object.keys(messagesObject || {})
-          .map(messageId => {
-            const timestamp = new Date(messagesObject[messageId].timestamp)
-              .toLocaleString();
-            
-            return {
-              ...messagesObject[messageId],
-              messageId,
-              timestamp
-            };
-          });
-
-        if (messages) {
-          setCurrentRoomMessages(messages);
-        }
-      });
   };
 
   render () {
@@ -105,7 +65,6 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-  firebase               : PropTypes.object.isRequired,
   users                  : PropTypes.array,
   foundUsers             : PropTypes.array,
   selectUser             : PropTypes.func.isRequired,

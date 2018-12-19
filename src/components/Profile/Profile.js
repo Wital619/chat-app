@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import AvatarPicker from './AvatarPicker';
 
-import {withFirebase} from '../Firebase';
+import {firebase} from '../Firebase';
 import {withAuthorization} from '../Session';
 
 import {setAuthUser} from '../../store/reducers/session';
@@ -15,13 +15,15 @@ import styles from './profile.scss';
 class Profile extends Component {
 
   handleUpdateAvatar = async imageData => {
-    const {firebase, authUser, setAuthUser} = this.props;
+    const {authUser, setAuthUser} = this.props;
 
     try {
       const snapshot = await firebase.getImage(imageData.name).put(imageData);
       const photoURL = await snapshot.ref.getDownloadURL();
 
-      await firebase.getUser(authUser.id).update({photoURL});
+      await firebase
+        .getUser(authUser.id)
+        .update({photoURL});
 
       const newUserData = {
         ...authUser,
@@ -48,7 +50,6 @@ class Profile extends Component {
 
 Profile.propTypes = {
   authUser        : PropTypes.object.isRequired,
-  firebase        : PropTypes.object.isRequired,
   setAuthUser     : PropTypes.func.isRequired,
 };
 
@@ -63,7 +64,6 @@ const mapDispatchToProps = {
 const condition = authUser => !!authUser;
 
 export default compose(
-  withFirebase,
   connect(mapStateToProps, mapDispatchToProps),
   withAuthorization(condition),
 )(Profile);

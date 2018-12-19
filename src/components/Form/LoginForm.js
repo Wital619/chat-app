@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormGroup from './FormGroup';
-import {withFirebase} from '../Firebase';
+import {firebase} from '../Firebase';
 
 import * as routes from '../../routes';
 import styles from './form.scss';
@@ -28,7 +28,7 @@ class LoginForm extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const { firebase, history } = this.props;
+    const { history } = this.props;
 
     try {
       await firebase.doSignInWithEmailAndPassword(email, password);
@@ -81,11 +81,9 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  history           : PropTypes.object.isRequired,
-  firebase          : PropTypes.object.isRequired
+  history           : PropTypes.object.isRequired
 };
 
 export default compose(
-  withFirebase,
   withRouter
 )(LoginForm);

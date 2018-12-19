@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 
-import { withFirebase } from '../Firebase';
+import {firebase} from '../Firebase';
 
 import {selectUser} from '../../store/reducers/user';
 import styles from './messages.scss';
@@ -18,26 +18,25 @@ class MessageInput extends Component {
   handleMessageCreate = e => {
     e.preventDefault();
 
-    const {firebase, authUser, selectedUser} = this.props;
+    const {authUser, selectedUser} = this.props;
+    const {inputValue} = this.state;
 
-    if (authUser.id && selectedUser.id) {
+    if (authUser.id && selectedUser.id && inputValue) {
       const roomId = selectedUser.id < authUser.id 
         ? selectedUser.id + authUser.id 
         : authUser.id + selectedUser.id;
 
       firebase.getRoomMessages(roomId).push({
-        text: this.state.inputValue,
+        text: inputValue,
         sender: {...authUser},
         timestamp: firebase.serverValue.TIMESTAMP
       });
 
-      firebase
-        .getUserRooms(authUser.id)
+      firebase.getUserRooms(authUser.id)
         .child(selectedUser.id)
         .set(selectedUser.id);
 
-      firebase
-        .getUserRooms(selectedUser.id)
+      firebase.getUserRooms(selectedUser.id)
         .child(authUser.id)
         .set(authUser.id);
     }
@@ -63,7 +62,6 @@ class MessageInput extends Component {
 }
 
 MessageInput.propTypes = {
-  firebase             : PropTypes.object,
   authUser             : PropTypes.object,
   selectedUser         : PropTypes.object
 };
@@ -73,6 +71,5 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-  withFirebase,
   connect(null, mapDispatchToProps)
 )(MessageInput);

@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import MessageItem from './MessageItem';
+import {firebase} from '../Firebase';
+
+import {setCurrentRoomMessages} from '../../store/reducers/room';
 
 import styles from './messages.scss';
 
@@ -11,7 +14,15 @@ class MessageList extends Component {
     this.scrollToBottom();
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps) {
+    const {selectedUser} = this.props;
+
+    const isSelectedUserChanged = prevProps.selectedUser.id !== selectedUser.id;
+
+    if (isSelectedUserChanged) {
+      this.onListenForMessages();
+    }
+
     this.scrollToBottom();
   }
 
@@ -21,6 +32,40 @@ class MessageList extends Component {
 
     this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
+
+  onListenForMessages = () => {
+    const {
+      setCurrentRoomMessages, 
+      authUser,
+      selectedUser,
+    } = this.props;
+
+    const roomId = selectedUser.id < authUser.id 
+      ? selectedUser.id + authUser.id 
+      : authUser.id + selectedUser.id;
+
+    firebase
+      .getRoomMessages(roomId)
+      .on('value', snapshot => {
+        const messagesObject = snapshot.val();
+
+        const messages = Object.keys(messagesObject || {})
+          .map(messageId => {
+            const timestamp = new Date(messagesObject[messageId].timestamp)
+              .toLocaleString();
+            
+            return {
+              ...messagesObject[messageId],
+              messageId,
+              timestamp
+            };
+          });
+
+        if (messages) {
+          setCurrentRoomMessages(messages);
+        }
+      });
+  };
 
   render () {
     const {currentRoomMessages, authUser} = this.props;
@@ -42,12 +87,18 @@ class MessageList extends Component {
 }
 
 MessageList.propTypes = {
-  currentRoomMessages : PropTypes.array,
-  authUser            : PropTypes.object.isRequired
+  currentRoomMessages     : PropTypes.array,
+  authUser                : PropTypes.object.isRequired,
+  selectedUser            : PropTypes.object,
+  setCurrentRoomMessages  : PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   currentRoomMessages : state.room.currentRoomMessages
 });
 
-export default connect(mapStateToProps)(MessageList);
+const mapDispatchToProps = {
+  setCurrentRoomMessages
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageList);

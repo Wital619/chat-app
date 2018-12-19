@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormGroup from './FormGroup';
-import {withFirebase} from '../Firebase';
+import {firebase} from '../Firebase';
 
 import * as routes from '../../routes';
 import styles from './form.scss';
@@ -30,13 +30,14 @@ class RegistrationForm extends Component {
     e.preventDefault();
 
     const { email, password, firstName, lastName } = this.state;
-    const { firebase, history } = this.props;
+    const { history } = this.props;
 
     try {
       const photoURL = await firebase.getImage('empry-icon.png').getDownloadURL();
       const {user} = await firebase.doCreateUserWithEmailAndPassword(email, password);
 
-      await firebase.getUser(user.uid)
+      await firebase
+        .getUser(user.uid)
         .set({
           id: user.uid,
           email: user.email,
@@ -108,11 +109,9 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  history                  : PropTypes.object.isRequired,
-  firebase                 : PropTypes.object.isRequired
+  history                  : PropTypes.object.isRequired
 };
 
 export default compose(
-  withFirebase,
   withRouter
 )(RegistrationForm);
