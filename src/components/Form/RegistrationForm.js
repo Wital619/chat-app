@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {compose} from 'redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -112,6 +111,4 @@ RegistrationForm.propTypes = {
   history                  : PropTypes.object.isRequired
 };
 
-export default compose(
-  withRouter
-)(RegistrationForm);
+export default withRouter(RegistrationForm);

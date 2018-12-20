@@ -18,13 +18,19 @@ const INITIAL_STATE = {
   isCompleted: false
 };
 
+const MAX_IMAGE_SIZE = 5000000;
+
 class AvatarPicker extends PureComponent {
   state = {...INITIAL_STATE};
 
   onSelectFile = e => {
     const {files} = e.target;
 
-    if (files && files.length > 0) {
+    if (!files || files.length < 0) {
+      return;
+    }
+
+    if (files[0].size < MAX_IMAGE_SIZE) {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
@@ -35,6 +41,8 @@ class AvatarPicker extends PureComponent {
       });
 
       reader.readAsDataURL(files[0]);
+    } else {
+      alert('The file size is too big! Select a file that is no larger than 5 megabytes.');        
     }
   };
 

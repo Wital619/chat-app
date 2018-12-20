@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "This is a chat application, written in React",
   "engines": {
-    "node": "8.12.0"
+    "npm": "6.4.1",
+    "node": "10.14.2"
   },
   "main": "index.js",
   "scripts": {
@@ -14,7 +15,8 @@
     "lint": "eslint ./src",
     "stylelint": "stylelint ./src/**/*.css",
     "precommit": "npm run lint && npm run stylelint",
-    "prepush": "echo 'tests temporary disabled'; exit 0"
+    "prepush": "echo 'tests temporary disabled'; exit 0",
+    "heroku-postbuild": "npm run serve"
   },
   "repository": {
     "type": "git",
@@ -40,11 +42,11 @@
     "dotenv": "^6.1.0",
     "eslint": "^5.9.0",
     "eslint-plugin-react": "^7.11.1",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^1.2.0",
     "jest": "^23.6.0",
+    "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.10.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",

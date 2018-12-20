@@ -1,17 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 
 module.exports = (env, {mode}) => {
+  const devMode = mode !== 'production';
   const config = {
     mode,
     entry: './src/index.js',
     output: {
       filename: 'bundle.js',
-      path: path.resolve(__dirname, 'public')
+      path: path.resolve(__dirname, 'build')
     },
     module: {
       rules: [
@@ -36,39 +37,37 @@ module.exports = (env, {mode}) => {
         },
         {
           test: /\.(sa|sc|c)ss$/,
-          use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader',
-                options: {
-                  modules: true,
-                  sourceMap: true,
-                  importLoaders: 1,
-                  camelCase: true,
-                  localIdentName: '[local]'
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  ident: 'postcss',
-                  plugins: () => [
-                    autoprefixer({
-                      browsers: [
-                        '>1%',
-                        'last 4 versions',
-                        'Firefox ESR',
-                        'not ie < 9'
-                      ],
-                      flexbox: 'no-2009'
-                    })
-                  ]
-                }
-              },
-            'sass-loader'
-            ]
-          })
+          use: [
+            devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                sourceMap: true,
+                importLoaders: 1,
+                camelCase: true,
+                localIdentName: '[local]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: () => [
+                  autoprefixer({
+                    browsers: [
+                      '>1%',
+                      'last 4 versions',
+                      'Firefox ESR',
+                      'not ie < 9'
+                    ],
+                    flexbox: 'no-2009'
+                  })
+                ]
+              }
+            },
+          'sass-loader'
+          ]
         },
         {
           test: /\.(png|jpg|gif)$/,
@@ -85,10 +84,8 @@ module.exports = (env, {mode}) => {
         template: './public/index.html',
         filename: './index.html'
       }),
-      new ExtractTextPlugin({ 
-        filename: 'styles.css', 
-        allChunks: true, 
-        disable: process.env.NODE_ENV !== 'production' 
+      new MiniCssExtractPlugin({
+        filename: 'styles.css'
       }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(dotenv.parsed)
@@ -101,11 +98,10 @@ module.exports = (env, {mode}) => {
       open: true,
       host: 'localhost',
       port: 3000,
-      contentBase: 'public',
+      contentBase: 'build',
       proxy: {
         '/api': {
           target: 'ws://localhost:5000',
-          ws: true,
           secure: false
         }
       }
