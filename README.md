@@ -1,6 +1,6 @@
 # Chat
 
-This is a Chat Application
+This is a Chat Application.
 The audience of users for this project is any. The application was made for quick communication of people in real time. Who needs this functionality can easily use it.
 
 # Tech stack
