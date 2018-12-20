@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './form.scss';
+import styles from './Form.scss';
 
 const FormGroup = ({
   labelText, 

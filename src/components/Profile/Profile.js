@@ -10,7 +10,7 @@ import {withAuthorization} from '../Session';
 
 import {setAuthUser} from '../../store/reducers/session';
 
-import styles from './profile.scss';
+import styles from './Profile.scss';
 
 class Profile extends Component {
 

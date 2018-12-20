@@ -3,10 +3,10 @@
 
 .form-wrapper {
   align-self: center;
-  width: $form-width;
+  width: 350px;
   margin: 50px 0;
   border-radius: 5px;
-  background-color: #22252a;
+  background-color: $form-bg;
 }
 
 .form {
@@ -59,7 +59,7 @@
   padding: 0 10px;
   border: 1px solid transparent;
   outline: none;
-  background-color: #454955;
+  background-color: $grey-darken;
   color: #b3b3b3;
 
   &:focus {
@@ -67,11 +67,11 @@
   }
 
   &::placeholder {
-    color: #717479;
+    color: $grey-lighten;
   }
 
   &-error {
-    border: 1px solid red;
+    border: 1px solid #f00;
   }
 }
 

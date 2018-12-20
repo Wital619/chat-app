@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import {firebase} from '../Firebase';
 
@@ -13,14 +12,8 @@ const withAuthentication = Component => {
       const {setAuthUser, logoutUser} = this.props;
 
       this.listener = firebase.onAuthUserListener(
-        authUser => {
-          localStorage.setItem('authUser', JSON.stringify(authUser));
-          setAuthUser(authUser);
-        },
-        () => {
-          localStorage.removeItem('authUser');
-          logoutUser();
-        },
+        authUser => setAuthUser(authUser),
+        () => logoutUser()
       );
     }
 
@@ -38,12 +31,7 @@ const withAuthentication = Component => {
     logoutUser
   };
 
-  return compose(
-    connect(
-      null,
-      mapDispatchToProps,
-    ),
-  )(WithAuthentication);
+  return connect(null, mapDispatchToProps)(WithAuthentication);
 };
 
 export default withAuthentication;

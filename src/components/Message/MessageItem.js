@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './messages.scss';
+import styles from './Message.scss';
 
 const MessageItem = ({
   message,

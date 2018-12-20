@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {firebase} from '../Firebase';
 
 import {selectUser} from '../../store/reducers/user';
-import styles from './messages.scss';
+import styles from './Message.scss';
 
 class MessageInput extends Component {
   state = {
@@ -41,7 +41,7 @@ class MessageInput extends Component {
         .child(selectedUser.id)
         .child('last_message')
         .set({
-          text: inputValue,
+          ...message,
           sender: authUser.displayName.split(' ')[0]
         });
 
@@ -54,7 +54,7 @@ class MessageInput extends Component {
         .child(authUser.id)
         .child('last_message')
         .set({
-          text: inputValue,
+          ...message,
           sender: 'You'
         });
     }

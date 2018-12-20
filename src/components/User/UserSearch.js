@@ -7,7 +7,7 @@ import {firebase} from '../Firebase';
 
 import {handleFoundUsers} from '../../store/reducers/search';
 
-import styles from './user.scss';
+import styles from './User.scss';
 
 class UserSearch extends Component {
   getUsersMatches = async e => {

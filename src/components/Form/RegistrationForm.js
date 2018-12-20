@@ -7,7 +7,7 @@ import FormGroup from './FormGroup';
 import {firebase} from '../Firebase';
 
 import * as routes from '../../routes';
-import styles from './form.scss';
+import styles from './Form.scss';
 
 const INITIAL_STATE = {
   firstName: '',

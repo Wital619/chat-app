@@ -3,12 +3,10 @@ const INITIAL_STATE = {
   selectedUser: {}
 };
 
-export const USER_SELECT = 'USER_SELECT';
-export const USER_SET = 'USER_SET'; 
-export const USERS_SET = 'USERS_SET';
+const USER_SELECT = 'USER_SELECT';
+const USERS_SET = 'USERS_SET';
 
 export const selectUser = payload => ({ type: USER_SELECT, payload });
-export const setUser = payload => ({ type: USER_SET, payload });
 export const setUsers = payload => ({ type: USERS_SET, payload });
 
 export default function userReducer (state = INITIAL_STATE, action) {
@@ -26,15 +24,6 @@ export default function userReducer (state = INITIAL_STATE, action) {
       return {
         ...state,
         users: action.payload
-      };
-    }
-    case USER_SET: {
-      return {
-        ...state,
-        users: {
-          ...state.users,
-          [action.id]: action.payload,
-        }
       };
     }
     default:

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './user.scss';
+import styles from './User.scss';
 
 const UserItem = ({
   selectUser,

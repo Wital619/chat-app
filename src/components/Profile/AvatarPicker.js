@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactCrop from 'react-image-crop';
 
 import 'react-image-crop/dist/ReactCrop.css';
-import styles from './profile.scss';
+import styles from './Profile.scss';
 
 const INITIAL_STATE = {
   src: null,

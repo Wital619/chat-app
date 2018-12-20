@@ -2,7 +2,7 @@ const INITIAL_STATE = {
   authUser: null
 };
 
-export const AUTH_USER_SET = 'AUTH_USER_SET';
+const AUTH_USER_SET = 'AUTH_USER_SET';
 
 export const setAuthUser = payload => ({ type: AUTH_USER_SET, payload });
 

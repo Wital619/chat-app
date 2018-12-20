@@ -1,13 +1,10 @@
 const INITIAL_STATE = {
-  foundUsers: null,
-  isSearching: false
+  foundUsers: null
 };
 
-export const FOUND_USERS_SET = 'FOUND_USERS_SET';
-export const IS_SEARCHING_SET = 'IS_SEARCHING_SET';
+const FOUND_USERS_SET = 'FOUND_USERS_SET';
 
 export const handleFoundUsers = payload => ({ type: FOUND_USERS_SET, payload });
-export const handleStartSearching = payload => ({ type: IS_SEARCHING_SET, payload });
 
 export default function searchReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -15,12 +12,6 @@ export default function searchReducer (state = INITIAL_STATE, action) {
       return {
         ...state,
         foundUsers: action.payload
-      };
-    }
-    case IS_SEARCHING_SET: {
-      return {
-        ...state,
-        isSearching: action.payload
       };
     }
     default:

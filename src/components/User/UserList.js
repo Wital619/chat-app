@@ -7,7 +7,7 @@ import {firebase} from '../Firebase';
 
 import {selectUser, setUsers} from '../../store/reducers/user';
 
-import styles from './user.scss';
+import styles from './User.scss';
 
 class UserList extends Component {
   userWasSelected = false;
@@ -52,7 +52,7 @@ class UserList extends Component {
               lastMessage: userRooms[authUser.id].last_message
             };
           }
-        });
+        }).sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp);
 
         setUsers(usersWithLastMessage);
       });

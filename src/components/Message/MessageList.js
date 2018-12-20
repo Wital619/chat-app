@@ -7,7 +7,7 @@ import {firebase} from '../Firebase';
 
 import {setCurrentRoomMessages} from '../../store/reducers/room';
 
-import styles from './messages.scss';
+import styles from './Message.scss';
 
 class MessageList extends Component {
   componentDidMount () {
@@ -74,15 +74,13 @@ class MessageList extends Component {
 
     return (
       <ul className={styles.messageList} ref={node => this.messageList = node}>
-        {currentRoomMessages.map(message => {
-          return (
-            <MessageItem
-              key={message.messageId}
-              message={message}
-              isCurrUserSender={message.sender.id === authUser.id}
-            /> 
-          );
-        })}
+        {currentRoomMessages.map(message => (
+          <MessageItem
+            key={message.messageId}
+            message={message}
+            isCurrUserSender={message.sender.id === authUser.id}
+          /> 
+        ))}
       </ul>
     );
   }
