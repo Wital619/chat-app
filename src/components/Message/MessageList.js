@@ -37,15 +37,13 @@ class MessageList extends Component {
     const {
       setCurrentRoomMessages, 
       authUser,
-      selectedUser,
+      selectedUser
     } = this.props;
 
-    const roomId = selectedUser.id < authUser.id 
-      ? selectedUser.id + authUser.id 
-      : authUser.id + selectedUser.id;
-
     firebase
-      .getRoomMessages(roomId)
+      .getUserRooms(authUser.id)
+      .child(selectedUser.id)
+      .child('messages')
       .on('value', snapshot => {
         const messagesObject = snapshot.val();
 
@@ -61,11 +59,15 @@ class MessageList extends Component {
             };
           });
 
-        if (messages) {
+        if (messages.length) {
           setCurrentRoomMessages(messages);
         }
       });
   };
+
+  componentWillUnmount () {
+    firebase.getUserRooms().off();
+  }
 
   render () {
     const {currentRoomMessages, authUser} = this.props;

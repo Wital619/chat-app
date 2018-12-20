@@ -5,19 +5,21 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import styles from './profile.scss';
 
+const INITIAL_STATE = {
+  src: null,
+  fileName: '',
+  crop: {
+    aspect: 1,
+    width: 50,
+    x: 0,
+    y: 0,
+  },
+  croppedImageData: null,
+  isCompleted: false
+};
+
 class AvatarPicker extends PureComponent {
-  state = {
-    src: null,
-    fileName: '',
-    crop: {
-      aspect: 1,
-      width: 50,
-      x: 0,
-      y: 0,
-    },
-    croppedImageData: null,
-    isCompleted: false
-  };
+  state = {...INITIAL_STATE};
 
   onSelectFile = e => {
     const {files} = e.target;
@@ -105,6 +107,7 @@ class AvatarPicker extends PureComponent {
 
   onUpdateAvatar = () => {
     this.props.handleUpdateAvatar(this.state.croppedImageData);
+    this.setState({ ...INITIAL_STATE });
   };
 
   render () {

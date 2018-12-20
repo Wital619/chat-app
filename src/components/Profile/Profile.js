@@ -23,7 +23,7 @@ class Profile extends Component {
 
       await firebase
         .getUser(authUser.id)
-        .update({photoURL});
+        .update({ photoURL });
 
       const newUserData = {
         ...authUser,

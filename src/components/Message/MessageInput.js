@@ -22,23 +22,41 @@ class MessageInput extends Component {
     const {inputValue} = this.state;
 
     if (authUser.id && selectedUser.id && inputValue) {
-      const roomId = selectedUser.id < authUser.id 
-        ? selectedUser.id + authUser.id 
-        : authUser.id + selectedUser.id;
-
-      firebase.getRoomMessages(roomId).push({
+      const message = {
         text: inputValue,
-        sender: {...authUser},
+        sender: {
+          id: authUser.id,
+          displayName: authUser.displayName,
+          photoURL: authUser.photoURL
+        },
         timestamp: firebase.serverValue.TIMESTAMP
-      });
+      };
 
       firebase.getUserRooms(authUser.id)
         .child(selectedUser.id)
-        .set(selectedUser.id);
+        .child('messages')
+        .push(message);
+
+      firebase.getUserRooms(authUser.id)
+        .child(selectedUser.id)
+        .child('last_message')
+        .set({
+          text: inputValue,
+          sender: authUser.displayName.split(' ')[0]
+        });
 
       firebase.getUserRooms(selectedUser.id)
         .child(authUser.id)
-        .set(authUser.id);
+        .child('messages')
+        .push(message);
+
+      firebase.getUserRooms(selectedUser.id)
+        .child(authUser.id)
+        .child('last_message')
+        .set({
+          text: inputValue,
+          sender: 'You'
+        });
     }
 
     this.setState({ inputValue: '' });

@@ -15,18 +15,25 @@ const UserItem = ({
   return (
     <li className={classNames} onClick={() => selectUser(user)}>
       <img className={styles.userItemAvatar} src={user.photoURL} alt='avatar' />
-      <div className={styles.userItemInfo}>
-        <h4 className={styles.userItemName} title={user.displayName}>{user.displayName}</h4>
-        <p className={styles.userItemLastMessage}>Njer ojogre hgoeh oio ijej oerjo jgerjog e</p>
-      </div>
+      {user.lastMessage && (
+        <div className={styles.userItemInfo}>
+          <h4 className={styles.userItemName}>{user.displayName}</h4>
+          <p className={styles.userItemLastMessage}>
+            {user.lastMessage.sender}: {user.lastMessage.text}
+          </p>
+        </div>
+      )}
+      {!user.lastMessage && (
+        <h4 className={styles.userItemName}>{user.displayName}</h4>
+      )}
     </li>
   );
 };
 
 UserItem.propTypes = {
-  user             : PropTypes.object.isRequired,
-  selectUser       : PropTypes.func.isRequired,
-  isItSelectedUser : PropTypes.bool.isRequired
+  user               : PropTypes.object.isRequired,
+  selectUser         : PropTypes.func.isRequired,
+  isItSelectedUser   : PropTypes.bool.isRequired
 };
 
 export default UserItem;

@@ -1,10 +1,6 @@
 const INITIAL_STATE = {
   users: [],
-  selectedUser: {
-    id: null,
-    displayName: null,
-    email: null
-  }
+  selectedUser: {}
 };
 
 export const USER_SELECT = 'USER_SELECT';
