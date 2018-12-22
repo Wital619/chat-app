@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import App from './components/App';
 import store from './store';
-import * as serviceWorker from './serviceWorker';
+import { registerServiceWorker } from './service-worker/register-service-worker';
 
 import './index.css';
 
@@ -13,4 +13,4 @@ ReactDOM.render(
     <App />
   </Provider>, document.getElementById('root'));
 
-serviceWorker.register();
+registerServiceWorker(process.env.NODE_ENV);

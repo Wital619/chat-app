@@ -1,7 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 
@@ -80,6 +82,10 @@ module.exports = (env, {mode}) => {
       ]
     },
     plugins: [
+      new CopyWebpackPlugin([
+        { from: './public/favicon.ico', to: './' },
+        { from: './public/manifest.json', to: './' },
+      ]),
       new HtmlWebPackPlugin({
         template: './public/index.html',
         filename: './index.html'
@@ -89,6 +95,11 @@ module.exports = (env, {mode}) => {
       }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(dotenv.parsed)
+      }),
+      new WorkboxPlugin.GenerateSW({
+        swDest: 'service-worker.js',
+        clientsClaim: true,
+        skipWaiting: true,
       })
     ],
     devServer: {

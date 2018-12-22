@@ -1,7 +1,7 @@
 node_modules
 .vscode
 .idea
-build
 .env
 .env.production
 .env.development
+build

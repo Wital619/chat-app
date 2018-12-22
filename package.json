@@ -11,6 +11,7 @@
     "dev": "webpack-dev-server -d",
     "build": "webpack -d",
     "serve": "webpack -p",
+    "start": "node server.js",
     "test": "echo 'tests temporary disabled'; exit 0",
     "lint": "eslint ./src",
     "stylelint": "stylelint ./src/**/*.css",
@@ -39,6 +40,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "css-loader": "^1.0.1",
+    "copy-webpack-plugin": "^4.6.0",
     "dotenv": "^6.1.0",
     "eslint": "^5.9.0",
     "eslint-plugin-react": "^7.11.1",
@@ -50,11 +52,6 @@
     "node-sass": "^4.10.0",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",
-    "react-redux": "^5.1.1",
-    "react-router-dom": "^4.3.1",
-    "recompose": "^0.30.0",
-    "redux": "^4.0.1",
-    "redux-logger": "^3.0.6",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "stylelint": "^9.9.0",
@@ -66,11 +63,17 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "firebase": "^5.6.0",
     "react": "^16.6.3",
     "react-debounce-input": "^3.2.0",
     "react-dom": "^16.6.3",
     "react-image-crop": "^6.0.9",
-    "redux-thunk": "^2.3.0"
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "workbox-webpack-plugin": "^3.6.3"
   }
 }

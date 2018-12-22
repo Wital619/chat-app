@@ -35,7 +35,7 @@ export const onAuthUserListener = (next, fallback) =>
         .once('value')
         .then(snapshot => {
           next({
-            ...snapshot.val() 
+            ...snapshot.val()
           });
         });
     } else {

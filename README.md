@@ -3,6 +3,8 @@
 This is a Chat Application.
 The audience of users for this project is any. The application was made for quick communication of people in real time. Who needs this functionality can easily use it.
 
+[Demo](https://chat-app-wital619.herokuapp.com)
+
 # Tech stack
  - HTML
  - CSS (SASS)
